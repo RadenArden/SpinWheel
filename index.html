@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel of Names - Roda Undian</title>
+     <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>🎡 Wheel of Names</h1>
+        <p>Putar roda untuk memilih pemenang secara acak</p>
+    </div>
+
+    <div class="main-container">
+        <!-- Panel Kiri - Input Nama -->
+        <div class="input-panel">
+            <h2>📝 Daftar Nama</h2>
+            <textarea class="name-input" id="nameInput" placeholder="Masukkan nama (satu nama per baris)
+Ahmad
+Budi
+Citra
+Dewi
+Eko
+Fitri
+Gilang
+Hana
+Indra
+Julia"></textarea>
+            <div class="input-help">💡 Ketik satu nama per baris</div>
+            <div class="button-group">
+                <button class="btn btn-primary" id="updateBtn">✓ Perbarui Roda</button>
+                <button class="btn btn-secondary" id="shuffleBtn">🔀 Acak Urutan</button>
+                <button class="btn btn-danger" id="clearBtn">🗑️ Hapus Semua</button>
+            </div>
+        </div>
+
+        <!-- Panel Tengah - Roda -->
+        <div class="wheel-panel">
+            <div class="wheel-container">
+                <div class="arrow-pointer"></div>
+                <canvas id="wheelCanvas"></canvas>
+                <button class="center-button" id="spinBtn">SPIN</button>
+            </div>
+        </div>
+
+        <!-- Panel Kanan - Pengaturan & Hasil -->
+        <div class="control-panel">
+            <!-- Pengaturan -->
+            <div class="panel-box">
+                <h3>⚙️ Pengaturan</h3>
+                <div class="toggle-item">
+                    <span class="toggle-label">Tampilkan Pemenang</span>
+                    <label class="switch">
+                        <input type="checkbox" id="showWinnerToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-item">
+                    <span class="toggle-label">Suara Efek</span>
+                    <label class="switch">
+                        <input type="checkbox" id="soundToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="removeWinnerCheck">
+                    <label for="removeWinnerCheck">Hapus pemenang dari daftar</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="confettiCheck" checked>
+                    <label for="confettiCheck">Animasi confetti</label>
+                </div>
+            </div>
+
+            <!-- Hasil Pemenang -->
+            <div class="panel-box">
+                <h3>🏆 Pemenang</h3>
+                <div class="winner-box" id="winnerBox">
+                    <div class="winner-title">Pemenang</div>
+                    <div class="winner-name" id="winnerDisplay">Tekan SPIN!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Pemenang -->
+    <div class="winner-popup-overlay" id="popupOverlay">
+        <div class="winner-popup">
+            <div class="winner-popup-icon">🎉</div>
+            <div class="winner-popup-title">Selamat!</div>
+            
+            <!-- TOGGLE SWITCH DI POPUP -->
+            <div class="popup-toggle-container">
+                <span class="popup-toggle-label">Tampilkan Pemenang:</span>
+                <label class="switch">
+                    <input type="checkbox" id="popupShowWinnerToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="winner-popup-name" id="popupWinnerName">Loading...</div>
+            
+            <div class="popup-buttons">
+                <button class="winner-popup-close" id="closePopup">Tutup</button>
+                <button class="winner-popup-remove" id="removeWinnerBtn">❌ Hapus Pemenang</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+   
+</body>
+</html>

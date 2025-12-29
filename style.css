@@ -1,0 +1,680 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.header {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: clamp(24px, 5vw, 36px);
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.header p {
+    font-size: clamp(14px, 2.5vw, 16px);
+    opacity: 0.9;
+}
+
+.main-container {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(400px, 2fr) minmax(280px, 1fr);
+    gap: 30px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Panel Kiri - Input Nama */
+.input-panel {
+    background: white;
+    border-radius: 15px;
+    padding: clamp(20px, 3vw, 25px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.input-panel h2 {
+    font-size: clamp(18px, 3vw, 22px);
+    margin-bottom: 15px;
+    color: #2a5298;
+}
+
+.name-input {
+    width: 100%;
+    min-height: clamp(250px, 35vh, 300px);
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: clamp(14px, 2vw, 15px);
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.3s;
+}
+
+.name-input:focus {
+    outline: none;
+    border-color: #2a5298;
+}
+
+.input-help {
+    margin-top: 10px;
+    font-size: clamp(12px, 1.8vw, 13px);
+    color: #666;
+}
+
+.button-group {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    flex: 1;
+    min-width: 120px;
+    padding: clamp(10px, 1.8vw, 12px) clamp(16px, 2.5vw, 20px);
+    border: none;
+    border-radius: 10px;
+    font-size: clamp(13px, 2vw, 14px);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+.btn-primary {
+    background: #2a5298;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #1e3c72;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(42,82,152,0.3);
+}
+
+.btn-secondary {
+    background: #f1f3f5;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #e1e3e5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-danger {
+    background: #ff6b6b;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #ee5a6f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255,107,107,0.3);
+}
+
+/* Panel Tengah - Roda */
+.wheel-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.wheel-container {
+    position: relative;
+    width: min(500px, 90vw, 80vh);
+    height: min(500px, 90vw, 80vh);
+    max-width: 600px;
+    max-height: 600px;
+    margin-bottom: 30px;
+}
+
+#wheelCanvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* Panah penunjuk */
+.arrow-pointer {
+    position: absolute;
+    top: clamp(-12px, -2vw, -15px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: clamp(18px, 3vw, 25px) solid transparent;
+    border-right: clamp(18px, 3vw, 25px) solid transparent;
+    border-top: clamp(30px, 5vw, 45px) solid #ff4757;
+    z-index: 10;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4));
+}
+
+/* Tombol Spin di tengah roda */
+.center-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(70px, 15vw, 100px);
+    height: clamp(70px, 15vw, 100px);
+    background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+    border: clamp(3px, 0.8vw, 5px) solid white;
+    border-radius: 50%;
+    color: white;
+    font-size: clamp(14px, 3vw, 20px);
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(255,107,107,0.5);
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.center-button:hover:not(:disabled) {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 10px 30px rgba(255,107,107,0.6);
+}
+
+.center-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Panel Kanan - Pengaturan & Hasil */
+.control-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-box {
+    background: white;
+    border-radius: 15px;
+    padding: clamp(20px, 3vw, 25px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.panel-box h3 {
+    font-size: clamp(18px, 2.5vw, 20px);
+    margin-bottom: 15px;
+    color: #2a5298;
+}
+
+/* Toggle Switch untuk Pemenang */
+.toggle-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(12px, 2vw, 15px) 0;
+    border-bottom: 1px solid #eee;
+    gap: 10px;
+}
+
+.toggle-item:last-child {
+    border-bottom: none;
+}
+
+.toggle-label {
+    font-size: clamp(13px, 2vw, 15px);
+    font-weight: 500;
+    color: #333;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: clamp(50px, 8vw, 56px);
+    height: clamp(26px, 4vw, 30px);
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 30px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: clamp(18px, 3vw, 22px);
+    width: clamp(18px, 3vw, 22px);
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2ecc71;
+}
+
+input:checked + .slider:before {
+    transform: translateX(clamp(22px, 4vw, 26px));
+}
+
+/* Checkbox */
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    gap: 10px;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: clamp(18px, 3vw, 20px);
+    height: clamp(18px, 3vw, 20px);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.checkbox-item label {
+    font-size: clamp(13px, 2vw, 14px);
+    cursor: pointer;
+}
+
+/* Area Hasil Pemenang */
+.winner-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: clamp(20px, 4vw, 30px);
+    border-radius: 15px;
+    text-align: center;
+    min-height: clamp(120px, 20vh, 150px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+}
+
+.winner-title {
+    font-size: clamp(14px, 2.5vw, 16px);
+    opacity: 0.9;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.winner-name {
+    font-size: clamp(24px, 5vw, 36px);
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    word-wrap: break-word;
+}
+
+.hidden-winner {
+    font-size: clamp(18px, 3.5vw, 24px);
+    font-style: italic;
+    opacity: 0.7;
+}
+
+/* POPUP PEMENANG */
+.winner-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    padding: 20px;
+}
+
+.winner-popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.winner-popup {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 25px;
+    padding: clamp(30px, 5vw, 50px) clamp(40px, 6vw, 70px);
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    transform: scale(0.5);
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    max-width: min(600px, 90vw);
+    width: 100%;
+    position: relative;
+}
+
+.winner-popup-overlay.show .winner-popup {
+    transform: scale(1);
+}
+
+.winner-popup-icon {
+    font-size: clamp(50px, 10vw, 80px);
+    animation: bounce 1s infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.winner-popup-title {
+    font-size: clamp(22px, 5vw, 32px);
+    color: white;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: clamp(1px, 0.3vw, 2px);
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+}
+
+/* TOGGLE DI POPUP */
+.popup-toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(10px, 2vw, 15px);
+    margin: 20px 0;
+    padding: clamp(12px, 2vw, 15px) clamp(20px, 3vw, 30px);
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    flex-wrap: wrap;
+}
+
+.popup-toggle-label {
+    font-size: clamp(14px, 2.5vw, 16px);
+    color: white;
+    font-weight: 600;
+}
+
+.winner-popup-name {
+    font-size: clamp(32px, 7vw, 56px);
+    color: white;
+    font-weight: bold;
+    margin: 20px 0;
+    word-wrap: break-word;
+    word-break: break-word;
+    animation: glow 2s infinite;
+    min-height: clamp(50px, 10vw, 70px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+@keyframes glow {
+    0%, 100% { text-shadow: 3px 3px 10px rgba(0,0,0,0.4); }
+    50% { text-shadow: 0 0 20px rgba(255,255,255,0.8); }
+}
+
+.popup-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.winner-popup-close {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: clamp(12px, 2vw, 15px) clamp(30px, 4vw, 40px);
+    border-radius: 50px;
+    font-size: clamp(14px, 2.5vw, 18px);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.winner-popup-close:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.winner-popup-remove {
+    background: rgba(255, 71, 87, 0.9);
+    color: white;
+    border: none;
+    padding: clamp(12px, 2vw, 15px) clamp(25px, 3vw, 35px);
+    border-radius: 50px;
+    font-size: clamp(13px, 2.3vw, 16px);
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.winner-popup-remove:hover {
+    background: #ff4757;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #f0f;
+    animation: confetti-fall 3s linear;
+}
+
+@keyframes confetti-fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* ==================== RESPONSIVE BREAKPOINTS ==================== */
+
+/* Large Desktop & up */
+@media (min-width: 1400px) {
+    .main-container {
+        gap: 40px;
+    }
+}
+
+/* Desktop (1024px - 1399px) */
+@media (max-width: 1399px) {
+    .main-container {
+        grid-template-columns: minmax(260px, 1fr) minmax(380px, 1.8fr) minmax(260px, 1fr);
+        gap: 25px;
+    }
+}
+
+/* Tablet Landscape (768px - 1023px) */
+@media (max-width: 1023px) {
+    body {
+        padding: 15px;
+    }
+
+    .main-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 700px;
+    }
+
+    .input-panel,
+    .control-panel {
+        max-width: 100%;
+    }
+
+    .wheel-container {
+        width: min(450px, 85vw);
+        height: min(450px, 85vw);
+        margin-bottom: 20px;
+    }
+
+    .button-group {
+        justify-content: stretch;
+    }
+
+    .btn {
+        flex: 1 1 calc(50% - 5px);
+        min-width: 0;
+    }
+}
+
+/* Tablet Portrait (481px - 767px) */
+@media (max-width: 767px) {
+    body {
+        padding: 10px;
+    }
+
+    .header {
+        margin-bottom: 20px;
+    }
+
+    .main-container {
+        gap: 15px;
+    }
+
+    .wheel-container {
+        width: min(380px, 80vw);
+        height: min(380px, 80vw);
+        margin-bottom: 15px;
+    }
+
+    .name-input {
+        min-height: 200px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        flex: none;
+    }
+
+    .popup-buttons {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .winner-popup-close,
+    .winner-popup-remove {
+        width: 100%;
+    }
+
+    .popup-toggle-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+/* Mobile (321px - 480px) */
+@media (max-width: 480px) {
+    .wheel-container {
+        width: min(300px, 75vw);
+        height: min(300px, 75vw);
+    }
+
+    .name-input {
+        min-height: 180px;
+    }
+
+    .arrow-pointer {
+        top: -10px;
+    }
+}
+
+/* Small Mobile (320px and below) */
+@media (max-width: 320px) {
+    body {
+        padding: 8px;
+    }
+
+    .wheel-container {
+        width: min(260px, 70vw);
+        height: min(260px, 70vw);
+    }
+
+    .name-input {
+        min-height: 150px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .arrow-pointer {
+        top: -8px;
+    }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .wheel-container {
+        width: min(300px, 50vh);
+        height: min(300px, 50vh);
+    }
+
+    .winner-popup {
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .name-input {
+        min-height: 150px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .btn,
+    .center-button,
+    .winner-popup-close,
+    .winner-popup-remove {
+        min-height: 44px; /* Minimum touch target size */
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        min-width: 24px;
+        min-height: 24px;
+    }
+}
